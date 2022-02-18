@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Rating, Chip, Button, BottomSheet, ListItem, Icon } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux'
+import { setBookmark, setBookDetails } from '../Redux/reduxSlice'
 
 export function SelectedBook({ selected, allBooks, goBack }) {
 
@@ -8,6 +10,9 @@ export function SelectedBook({ selected, allBooks, goBack }) {
     const [showSynopsis, setShowSynopsis] = useState(false)
     const [openSheet, setOpenSheet] = useState(false)
     const [selectedOption, setSelectedOption] = useState(-1)
+
+    const bookMark = useSelector((state) => state.books.bookmark)
+    const dispatch = useDispatch()
 
     let bookOptions = ['Want to Read', 'Start Reading', 'Read', 'Cancel']
 
@@ -32,6 +37,7 @@ export function SelectedBook({ selected, allBooks, goBack }) {
 
     const showFullSynopsis = () => {
         setShowSynopsis(!showSynopsis)
+        console.log('message: ', bookMark)
     }
 
     const saveBookmark = (i) => {
@@ -39,6 +45,8 @@ export function SelectedBook({ selected, allBooks, goBack }) {
         if (i !== 3) {
             setSelectedOption(i)
         }
+        dispatch(setBookmark(bookOptions[i]))
+        dispatch(setBookDetails(showBookData))
     }
 
     const displayBookInfo = (book) => {

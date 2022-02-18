@@ -1,34 +1,29 @@
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import React, { useState } from 'react';
-import { LoginScreen } from './LoginScreen';
+import { AccountScreen } from './AccountScreen';
 
 export function HomeScreen({ navigation }) {
 
     const [showLogin, setShowLogin] = useState(false)
+    const [showRegister, setShowRegister] = useState(false)
 
     const image = { uri: "https://wallpapercave.com/dwp2x/wp10055131.jpg" };
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={image} style={styles.image}>
+            {/* <ImageBackground source={image} style={styles.image}> */}
                 <View style={styles.textContainer}>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Books App</Text>
-                        <Text style={styles.titleText}>   Search for your favorite fiction and non fiction books</Text>
-                        <Icon
-                            name='auto-stories'
-                            color='#00aced'
-                            />
+                        <Text style={styles.login}>Login/Register to access app features</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <Button title="Login" onPress={() => setShowLogin(true)}></Button>
-                        <Button title="Register as New User" onPress={() => navigation.navigate('Register')}></Button>
-                        <Button title="Continue as guest user" onPress={() => navigation.navigate('User')}></Button>
+                        <Button title="Register as New User" onPress={() => setShowRegister(true)}></Button>
                     </View>
                 </View>
-            </ImageBackground>
-            <LoginScreen showLogin={showLogin} />
+            {/* </ImageBackground> */}
+            <AccountScreen showLogin={showLogin} showRegister={showRegister} />
         </View>
     )
 }
@@ -38,23 +33,24 @@ const styles = StyleSheet.create({
         marginTop: 20,
         padding: 20,
         display: 'flex',
-        height: 700,
+        // height: 700,
         flexDirection: 'column',
         justifyContent: 'space-between'
     },
     titleContainer: {
         display: 'flex',
-        height: 250,
+        height: 60,
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     buttonContainer: {
         display: 'flex',
-        height: 150,
+        height: 100,
         flexDirection: 'column',
         justifyContent: 'space-between',
-        width: 350,
-        marginLeft: 20
+        width: 400,
+        marginLeft: 0
     },
     // emptyContainer: {
     //     height: 400
@@ -79,8 +75,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     image: {
-        flex: 1,
+        // flex: 1,
         // resizeMode: 'cover',
         // justifyContent: 'center',
+    },
+    login: {
+        fontWeight: 'bold',
+        fontSize: 18,
     }
 })

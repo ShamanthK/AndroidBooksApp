@@ -30,10 +30,10 @@ export function BottomTabs() {
                         name='search' />
                 ),
             }} />
-            <Tab.Screen name="Settings" component={Settings} options={{
+            <Tab.Screen name="You" component={Settings} options={{
                 tabBarIcon: ({ color, size }) => (
                     <Icon
-                        name='settings' />
+                        name='person' />
                 ),
             }} />
         </Tab.Navigator>
