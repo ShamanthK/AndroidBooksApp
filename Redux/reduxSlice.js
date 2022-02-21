@@ -3,8 +3,13 @@ import { createSlice } from "@reduxjs/toolkit"
 const reduxSlice = createSlice({
     name: 'books',
     initialState: {
-      bookmark: 'a',
+      bookmark: '',
       bookdetails: []
+      // bookdetails: {
+      //   current: [],
+      //   wantTo: [],
+      //   read: []
+      // }
     },
     reducers: {
       setBookmark(state, action) {

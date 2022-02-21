@@ -30,7 +30,7 @@ export function ViewAllBooks({ allBooks }) {
     }
 
     const displayBooks = (books) => {
-        console.log('books: ', books)
+        // console.log('books: ', books)
         return (
             <View>
                 <View style={styles.listContainer}>

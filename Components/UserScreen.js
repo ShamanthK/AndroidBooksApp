@@ -4,6 +4,8 @@ import Autocomplete from 'react-native-autocomplete-input';
 import { SelectedBook } from './SelectedBook';
 import { ViewAllBooks } from './ViewAllBooks';
 import { Icon, Chip } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux'
+import { setBookmark, setBookDetails } from '../Redux/reduxSlice'
 
 export function UserScreen() {
 
@@ -17,15 +19,16 @@ export function UserScreen() {
     const [userQuery, setUserQuery] = useState('')
     const [selectedQuery, setSelectedQuery] = useState([])
     const [searched, setSearched] = useState(false)
+    const dispatch = useDispatch()
 
     const filterBooks = async (query) => {
-        console.log('query: ', query)
+        // console.log('query: ', query)
         setUserQuery(query)
         if (query.length >= 3) {
             try {
                 let filterSearchData = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query} :keyes&key=AIzaSyAajcnCCg4sfhvrnUV1RuQ-vmWBpejnqAs`)
                 let filterResponse = await filterSearchData.json()
-                console.log('response: ', filterResponse.items)
+                // console.log('response: ', filterResponse.items)
                 setAllBooks(filterResponse.items)
                 let filteredTitles = []
                 let allImages = []
@@ -33,7 +36,7 @@ export function UserScreen() {
                     filteredTitles.push(`${element.volumeInfo.title} by ${element.volumeInfo.authors}`)
                     allImages.push(element.volumeInfo.imageLinks.smallThumbnail)
                 });
-                console.log('filteredTitles: ', filteredTitles.splice(5, 5))
+                // console.log('filteredTitles: ', filteredTitles.splice(5, 5))
                 filteredTitles.push('View All 10 Results')
                 setFilteredBooks(filteredTitles)
                 setBookImage(allImages)
@@ -47,7 +50,7 @@ export function UserScreen() {
         try {
             let fetchSearchData = await fetch('https://www.googleapis.com/books/v1/volumes?q=business&inauthor=abc&key=AIzaSyAajcnCCg4sfhvrnUV1RuQ-vmWBpejnqAs')
             let searchResponse = await fetchSearchData.json()
-            console.log('response: ', searchResponse)
+            // console.log('response: ', searchResponse)
             setBookData(searchResponse.items)
         } catch (error) {
             console.log(error)
@@ -55,7 +58,7 @@ export function UserScreen() {
     }
 
     const saveSelectedBook = (book, index) => {
-        console.log('book: ', book, index)
+        // console.log('book: ', book, index)
         if (index === filteredBooks.length - 1) {
             setShowViewAll(true)
         } else {
@@ -69,6 +72,7 @@ export function UserScreen() {
 
     const goBack = () => {
         setShowBook(false)
+        dispatch(setBookmark(''))
     }
 
     // const displayBooks = (books) => {
@@ -96,10 +100,10 @@ export function UserScreen() {
     // }
 
     const deleteChip = (i) => {
-        console.log(i)
+        // console.log(i)
         let deleteSelection = []
         deleteSelection = selectedQuery.splice(i, 1)
-        console.log(deleteSelection)
+        // console.log(deleteSelection)
         setSelectedQuery(deleteSelection)
     }
 

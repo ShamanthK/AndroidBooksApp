@@ -12,22 +12,24 @@ export function SelectedBook({ selected, allBooks, goBack }) {
     const [selectedOption, setSelectedOption] = useState(-1)
 
     const bookMark = useSelector((state) => state.books.bookmark)
+    const bookDetails = useSelector((state) => state.books.bookdetails)
+
     const dispatch = useDispatch()
 
     let bookOptions = ['Want to Read', 'Start Reading', 'Read', 'Cancel']
 
     useEffect(() => {
         let titleIndex = selected.indexOf("by");
-        console.log(titleIndex)
+        // console.log(titleIndex)
         let selectedBookData = []
         if (titleIndex === -1) {
             selectedBookData = allBooks.filter((book) => book.volumeInfo.title === selected)
         } else {
             let bookTitle = selected.substr(0, titleIndex - 1)
-            console.log(bookTitle)
-            console.log(allBooks)
+            // console.log(bookTitle)
+            // console.log(allBooks)
             selectedBookData = allBooks.filter((book) => book.volumeInfo.title === bookTitle)
-            console.log(selectedBookData)
+            // console.log(selectedBookData)
         }
         if (selectedBookData.length > 1) {
             selectedBookData.splice(1, 1)
@@ -37,7 +39,7 @@ export function SelectedBook({ selected, allBooks, goBack }) {
 
     const showFullSynopsis = () => {
         setShowSynopsis(!showSynopsis)
-        console.log('message: ', bookMark)
+        // console.log('message: ', bookMark)
     }
 
     const saveBookmark = (i) => {
@@ -46,11 +48,12 @@ export function SelectedBook({ selected, allBooks, goBack }) {
             setSelectedOption(i)
         }
         dispatch(setBookmark(bookOptions[i]))
-        dispatch(setBookDetails(showBookData))
+        dispatch(setBookDetails([...bookDetails, showBookData[0]]))
+        // dispatch(setBookDetails({...bookDetails, current: showBookData[0]}))
     }
 
     const displayBookInfo = (book) => {
-        console.log(book.item.volumeInfo.description.length)
+        // console.log(book.item.volumeInfo.description.length)
 
         return (
             <View style={styles.flatList}>

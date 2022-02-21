@@ -8,12 +8,12 @@ export function AccountScreen({ showLogin, showRegister }) {
     const [registerModal, setRegisterModal] = useState(showRegister)
 
     useEffect(() => {
-        console.log(showLogin)
+        // console.log(showLogin)
         setLoginModal(showLogin)
     }, [showLogin])
 
     useEffect(() => {
-        console.log(showLogin)
+        // console.log(showLogin)
         setRegisterModal(showRegister)
     }, [showRegister])
 

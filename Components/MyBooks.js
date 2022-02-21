@@ -7,6 +7,8 @@ export function MyBooks() {
 
     const [activeIndex, setActiveIndex] = useState(0)
     const [carouselItems, setCarouselItems] = useState([])
+    const [carouselWanttoRead, setCarouselWanttoRead] = useState([])
+    const [carouselRead, setCarouselRead] = useState([])
     const bookMark = useSelector((state) => state.books.bookmark)
     const bookDetails = useSelector((state) => state.books.bookdetails)
 
@@ -33,13 +35,25 @@ export function MyBooks() {
         // catch (error) {
         //     console.log(error)
         // }
+        console.log('show: ', bookDetails.current)
+        // switch (bookMark) {
+        //     case value:
+                
+        //         break;
+        
+        //     default:
+        //         break;
+        // }
         let carouselCards = []
-        carouselCards.push({
-            image: bookDetails[0].volumeInfo.imageLinks.smallThumbnail,
-            title: `${bookDetails[0].volumeInfo.title} by ${bookDetails[0].volumeInfo.authors}`
-        })
+        bookDetails.forEach(element => {
+            carouselCards.push({
+                image: element.volumeInfo.imageLinks.smallThumbnail,
+                title: `${element.volumeInfo.title} by ${element.volumeInfo.authors}`
+            })
+        });
+        console.log('carousel: ', carouselCards)
         setCarouselItems(carouselCards)
-        console.log('show: ', bookDetails[0].volumeInfo.imageLinks.smallThumbnail)
+
     }, [bookMark, bookDetails])
 
 
@@ -72,7 +86,7 @@ export function MyBooks() {
         <ScrollView>
             <View style={{ display: 'flex', flexDirection: 'column' }}>
                 <View style={styles.carouselContainer}>
-                    <Text style={styles.read}>Currently Reading (1)</Text>
+                    <Text style={styles.read}>Currently Reading <Text>({bookDetails.length})</Text></Text>
                     <Carousel
                         layout={"stack"}
                         layoutCardOffset={9}
