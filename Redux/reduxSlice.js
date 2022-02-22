@@ -4,12 +4,12 @@ const reduxSlice = createSlice({
     name: 'books',
     initialState: {
       bookmark: '',
-      bookdetails: []
-      // bookdetails: {
-      //   current: [],
-      //   wantTo: [],
-      //   read: []
-      // }
+      // bookdetails: []
+      bookdetails: {
+        current: [],
+        wantTo: [],
+        read: []
+      }
     },
     reducers: {
       setBookmark(state, action) {

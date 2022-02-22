@@ -48,7 +48,20 @@ export function SelectedBook({ selected, allBooks, goBack }) {
             setSelectedOption(i)
         }
         dispatch(setBookmark(bookOptions[i]))
-        dispatch(setBookDetails([...bookDetails, showBookData[0]]))
+        switch (bookOptions[i]) {
+            case 'Want to Read':
+                dispatch(setBookDetails({...bookDetails, wantTo: [...bookDetails.wantTo , showBookData[0]]}))
+                break;
+            case 'Start Reading':                
+                dispatch(setBookDetails({...bookDetails, current: [...bookDetails.current , showBookData[0]]}))
+                break;
+            case 'Read':
+                dispatch(setBookDetails({...bookDetails, read: [...bookDetails.read , showBookData[0]]}))
+                break;
+            default:
+                break;
+        }
+        // dispatch(setBookDetails([...bookDetails, showBookData[0]]))
         // dispatch(setBookDetails({...bookDetails, current: showBookData[0]}))
     }
 
@@ -133,9 +146,9 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                                     <ListItem.Content>
                                         <ListItem.Title>
                                             <View style={styles.bottomSheet}>
-                                                <Text>{l}</Text> 
-                                                {i !==3 && selectedOption === i ? <Text><Icon name='done' color="green" /></Text> :
-                                                i === 3 ? <Text><Icon name='close' color="red" /></Text> : <></>}
+                                                <Text>{l}</Text>
+                                                {i !== 3 && selectedOption === i ? <Text><Icon name='done' color="green" /></Text> :
+                                                    i === 3 ? <Text><Icon name='close' color="red" /></Text> : <></>}
                                             </View>
                                         </ListItem.Title>
                                     </ListItem.Content>

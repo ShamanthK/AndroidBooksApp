@@ -35,24 +35,53 @@ export function MyBooks() {
         // catch (error) {
         //     console.log(error)
         // }
-        console.log('show: ', bookDetails.current)
-        // switch (bookMark) {
-        //     case value:
-                
-        //         break;
-        
-        //     default:
-        //         break;
-        // }
-        let carouselCards = []
-        bookDetails.forEach(element => {
-            carouselCards.push({
-                image: element.volumeInfo.imageLinks.smallThumbnail,
-                title: `${element.volumeInfo.title} by ${element.volumeInfo.authors}`
-            })
-        });
-        console.log('carousel: ', carouselCards)
-        setCarouselItems(carouselCards)
+        console.log('show: ', bookDetails)
+        switch (bookMark) {
+            case 'Want to Read':
+                let carouselWantTo = []
+                bookDetails.wantTo.forEach(element => {
+                    carouselWantTo.push({
+                        image: element.volumeInfo.imageLinks.smallThumbnail,
+                        title: `${element.volumeInfo.title} by ${element.volumeInfo.authors}`
+                    })
+                });
+                console.log('carousel: ', carouselWantTo)
+                setCarouselWanttoRead(carouselWantTo)
+                break;
+            case 'Start Reading':
+                let carouselCards = []
+                bookDetails.current.forEach(element => {
+                    carouselCards.push({
+                        image: element.volumeInfo.imageLinks.smallThumbnail,
+                        title: `${element.volumeInfo.title} by ${element.volumeInfo.authors}`
+                    })
+                });
+                console.log('carousel: ', carouselCards)
+                setCarouselItems(carouselCards)
+                break;
+            case 'Read':
+                let carouselReads = []
+                bookDetails.read.forEach(element => {
+                    carouselReads.push({
+                        image: element.volumeInfo.imageLinks.smallThumbnail,
+                        title: `${element.volumeInfo.title} by ${element.volumeInfo.authors}`
+                    })
+                });
+                console.log('carousel: ', carouselReads)
+                setCarouselRead(carouselReads)
+                break;
+            default:
+                break;
+        }
+        // let carouselCards = []
+        // bookDetails.forEach(element => {
+        //     carouselCards.push({
+        //         image: element.volumeInfo.imageLinks.smallThumbnail,
+        //         title: `${element.volumeInfo.title} by ${element.volumeInfo.authors}`
+        //     })
+        // });
+        // console.log('carousel: ', carouselCards)
+        // setCarouselItems(carouselCards)
 
     }, [bookMark, bookDetails])
 
@@ -86,7 +115,7 @@ export function MyBooks() {
         <ScrollView>
             <View style={{ display: 'flex', flexDirection: 'column' }}>
                 <View style={styles.carouselContainer}>
-                    <Text style={styles.read}>Currently Reading <Text>({bookDetails.length})</Text></Text>
+                    <Text style={styles.read}>Currently Reading <Text>({carouselItems.length})</Text></Text>
                     <Carousel
                         layout={"stack"}
                         layoutCardOffset={9}
@@ -101,14 +130,14 @@ export function MyBooks() {
                 </View>
 
                 <View style={styles.carouselContainer}>
-                    <Text style={styles.read}>Want to Read (1)</Text>
+                    <Text style={styles.read}>Want to Read <Text>({carouselWanttoRead.length})</Text></Text>
                     <Carousel
                         layout={"stack"}
                         layoutCardOffset={9}
                         // ref={c => {
                         //     _carousel = c;
                         //   }}
-                        data={carouselItems}
+                        data={carouselWanttoRead}
                         sliderWidth={300}
                         itemWidth={300}
                         renderItem={_renderItem}
@@ -116,14 +145,14 @@ export function MyBooks() {
                 </View>
 
                 <View style={styles.carouselContainer}>
-                    <Text style={styles.read}>Read (1)</Text>
+                    <Text style={styles.read}>Read <Text>({carouselRead.length})</Text></Text>
                     <Carousel
                         layout={"stack"}
                         layoutCardOffset={9}
                         // ref={c => {
                         //     _carousel = c;
                         //   }}
-                        data={carouselItems}
+                        data={carouselRead}
                         sliderWidth={300}
                         itemWidth={300}
                         renderItem={_renderItem}
