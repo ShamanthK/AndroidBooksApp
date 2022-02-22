@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 const reduxSlice = createSlice({
     name: 'books',
     initialState: {
+      loggedIn: false,
       bookmark: '',
       // bookdetails: []
       bookdetails: {
@@ -12,6 +13,9 @@ const reduxSlice = createSlice({
       }
     },
     reducers: {
+      setLogin(state, action) {
+        state.loggedIn = action.payload
+      },
       setBookmark(state, action) {
         state.bookmark = action.payload
       },
@@ -21,5 +25,5 @@ const reduxSlice = createSlice({
     }
   })
   
-  export const { setBookmark, setBookDetails } = reduxSlice.actions
+  export const { setLogin, setBookmark, setBookDetails } = reduxSlice.actions
   export default reduxSlice.reducer

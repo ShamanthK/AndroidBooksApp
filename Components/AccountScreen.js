@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Button, Icon, Input, Overlay } from 'react-native-elements';
+import { useSelector, useDispatch } from 'react-redux'
+import { setLogin } from '../Redux/reduxSlice'
 
 export function AccountScreen({ showLogin, showRegister }) {
 
     const [loginModal, setLoginModal] = useState(showLogin)
     const [registerModal, setRegisterModal] = useState(showRegister)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         // console.log(showLogin)
@@ -42,7 +45,7 @@ export function AccountScreen({ showLogin, showRegister }) {
                         />
                     </View>
                     <View style={styles.actionContainer}>
-                        <Button title="Login" color="#f194ff" onPress={() => navigation.navigate('User')}></Button>
+                        <Button title="Login" color="#f194ff" onPress={() => dispatch(setLogin(true))}></Button>
                         <Button title="Cancel" color="#f194ff" onPress={() => setLoginModal(false)}></Button>
                     </View>
                 </View>
@@ -89,7 +92,7 @@ export function AccountScreen({ showLogin, showRegister }) {
                         />
                     </View>
                     <View style={styles.actionContainer}>
-                        <Button title="Register" color="#f194ff" onPress={() => setRegisterModal(false)}></Button>
+                        <Button title="Register" color="#f194ff" onPress={() => dispatch(setLogin(true))}></Button>
                         <Button title="Cancel" color="#f194ff" onPress={() => setRegisterModal(false)}></Button>
                     </View>
                 </View>

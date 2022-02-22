@@ -11,7 +11,8 @@ export function SelectedBook({ selected, allBooks, goBack }) {
     const [openSheet, setOpenSheet] = useState(false)
     const [selectedOption, setSelectedOption] = useState(-1)
 
-    const bookMark = useSelector((state) => state.books.bookmark)
+    const loggedIn = useSelector((state) => state.books.loggedIn)
+    // const bookMark = useSelector((state) => state.books.bookmark)
     const bookDetails = useSelector((state) => state.books.bookdetails)
 
     const dispatch = useDispatch()
@@ -50,13 +51,13 @@ export function SelectedBook({ selected, allBooks, goBack }) {
         dispatch(setBookmark(bookOptions[i]))
         switch (bookOptions[i]) {
             case 'Want to Read':
-                dispatch(setBookDetails({...bookDetails, wantTo: [...bookDetails.wantTo , showBookData[0]]}))
+                dispatch(setBookDetails({ ...bookDetails, wantTo: [...bookDetails.wantTo, showBookData[0]] }))
                 break;
-            case 'Start Reading':                
-                dispatch(setBookDetails({...bookDetails, current: [...bookDetails.current , showBookData[0]]}))
+            case 'Start Reading':
+                dispatch(setBookDetails({ ...bookDetails, current: [...bookDetails.current, showBookData[0]] }))
                 break;
             case 'Read':
-                dispatch(setBookDetails({...bookDetails, read: [...bookDetails.read , showBookData[0]]}))
+                dispatch(setBookDetails({ ...bookDetails, read: [...bookDetails.read, showBookData[0]] }))
                 break;
             default:
                 break;
@@ -111,31 +112,32 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                         <Text><Text style={styles.bottom}>Pages:</Text> {book.item.volumeInfo.pageCount}</Text>
                     </View>
                     <View style={styles.yourRating}>
-                        <Text>Rate the book</Text>
-                        <Rating
-                            type="star"
-                            startingValue={0}
-                            imageSize={30}
-                            style={{ paddingVertical: 10 }}
-                        />
-                        <Button
-                            title={'Write a Review'}
-                            containerStyle={{
-                                width: 200,
-                                marginHorizontal: 50,
-                                marginVertical: 10,
-                            }}
-                            onPress={goBack}
-                        />
-                        <Button
-                            title={selectedOption === -1 ? 'Save to My Books' : bookOptions[selectedOption]}
-                            containerStyle={{
-                                width: 200,
-                                marginHorizontal: 50,
-                                marginVertical: 10,
-                            }}
-                            onPress={() => setOpenSheet(true)}
-                        />
+                        {!loggedIn && <Text>Login to access additional features</Text>}
+                        {loggedIn && <><Text>Rate the book</Text>
+                            <Rating
+                                type="star"
+                                startingValue={0}
+                                imageSize={30}
+                                style={{ paddingVertical: 10 }}
+                            />
+                            <Button
+                                title={'Write a Review'}
+                                containerStyle={{
+                                    width: 200,
+                                    marginHorizontal: 50,
+                                    marginVertical: 10,
+                                }}
+                                onPress={goBack}
+                            />
+                            <Button
+                                title={selectedOption === -1 ? 'Save to My Books' : bookOptions[selectedOption]}
+                                containerStyle={{
+                                    width: 200,
+                                    marginHorizontal: 50,
+                                    marginVertical: 10,
+                                }}
+                                onPress={() => setOpenSheet(true)}
+                            /></>}
                         <BottomSheet modalProps={{}} isVisible={openSheet}>
                             {bookOptions.map((l, i) => (
                                 <ListItem

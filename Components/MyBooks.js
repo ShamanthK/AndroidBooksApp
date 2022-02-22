@@ -9,6 +9,7 @@ export function MyBooks() {
     const [carouselItems, setCarouselItems] = useState([])
     const [carouselWanttoRead, setCarouselWanttoRead] = useState([])
     const [carouselRead, setCarouselRead] = useState([])
+    const loggedIn = useSelector((state) => state.books.loggedIn)
     const bookMark = useSelector((state) => state.books.bookmark)
     const bookDetails = useSelector((state) => state.books.bookdetails)
 
@@ -113,7 +114,7 @@ export function MyBooks() {
 
     return (
         <ScrollView>
-            <View style={{ display: 'flex', flexDirection: 'column' }}>
+            {loggedIn && <View style={{ display: 'flex', flexDirection: 'column' }}>
                 <View style={styles.carouselContainer}>
                     <Text style={styles.read}>Currently Reading <Text>({carouselItems.length})</Text></Text>
                     <Carousel
@@ -158,7 +159,8 @@ export function MyBooks() {
                         renderItem={_renderItem}
                         onSnapToItem={index => setActiveIndex(index)} />
                 </View>
-            </View>
+            </View>}
+            {!loggedIn && <View style={styles.login}><Text style={styles.logintext}>Login to add books to your library</Text></View>}
         </ScrollView>
     )
 }
@@ -178,5 +180,15 @@ const styles = StyleSheet.create({
     },
     read: {
         padding: 10
+    },
+    login: {
+        // display: 'flex',
+        // flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 300,
+    },
+    logintext: {
+        fontSize: 18
     }
 })
