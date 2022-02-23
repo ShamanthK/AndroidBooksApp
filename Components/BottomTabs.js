@@ -11,30 +11,40 @@ export function BottomTabs() {
     const Tab = createBottomTabNavigator();
 
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            screenOptions={{
+                tabBarStyle: { backgroundColor: 'black', borderTopColor: 'black' },
+                tabBarInactiveTintColor: 'white',
+                tabBarActiveTintColor: 'teal'
+            }}
+        >
             <Tab.Screen name="Home" component={UserScreen} options={{
                 tabBarIcon: ({ color, size }) => (
                     <Icon
-                        name='home' />
+                        name='home' color={color} />
                 ),
+                headerShown: false
             }} />
             <Tab.Screen name="My Books" component={MyBooks} options={{
                 tabBarIcon: ({ color, size }) => (
                     <Icon
-                        name='bookmark' />
+                        name='bookmark' color={color} />
                 ),
+                headerShown: false
             }} />
             <Tab.Screen name="Discover" component={Discover} options={{
                 tabBarIcon: ({ color, size }) => (
                     <Icon
-                        name='search' />
+                        name='search' color={color} />
                 ),
+                headerShown: false
             }} />
             <Tab.Screen name="You" component={Settings} options={{
                 tabBarIcon: ({ color, size }) => (
                     <Icon
-                        name='person' />
+                        name='person' color={color} />
                 ),
+                headerShown: false
             }} />
         </Tab.Navigator>
     )

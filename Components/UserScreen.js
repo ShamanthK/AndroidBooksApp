@@ -110,7 +110,7 @@ export function UserScreen() {
     return (
         <View style={styles.container}>
             {!showBook && !showViewAll && <><View>
-                <Text>Enter book title or name of the author</Text>
+                <Text style={{ color: 'white' }}>Enter book title or name of the author</Text>
                 <View style={styles.autocompleteContainer}>
                     <Autocomplete
                         autoCapitalize="none"
@@ -165,7 +165,7 @@ export function UserScreen() {
                 <View style={styles.noRecentContainer}>
                     {!searched && <><Text style={styles.noRecent}>No Recent Searches</Text>
                         <Icon
-                            name='search' /></>}
+                            name='search' color={'white'} size={50} /></>}
                 </View>
             </>}
 
@@ -177,7 +177,11 @@ export function UserScreen() {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20
+        paddingTop: 70,
+        paddingLeft: 30,
+        paddingRight: 30,
+        backgroundColor: 'black',
+        height: 800
     },
     tinyLogo: {
         width: 150,
@@ -246,10 +250,12 @@ const styles = StyleSheet.create({
     },
     noRecent: {
         fontSize: 20,
-        padding: 10
+        padding: 10,
+        color: 'white'
     },
     recent: {
         fontSize: 16,
+        color: 'white'
         // fontWeight: 'bold'
     },
     chip: {

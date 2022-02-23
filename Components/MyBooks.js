@@ -6,37 +6,24 @@ import { useSelector, useDispatch } from 'react-redux'
 export function MyBooks() {
 
     const [activeIndex, setActiveIndex] = useState(0)
-    const [carouselItems, setCarouselItems] = useState([])
-    const [carouselWanttoRead, setCarouselWanttoRead] = useState([])
-    const [carouselRead, setCarouselRead] = useState([])
+    const [carouselItems, setCarouselItems] = useState([{
+                image: 'https://www.freepnglogos.com/uploads/number-0-png/number-0-newest-submissions-puns-8.png',
+                title: 'Books Currently Reading'
+    }])
+    const [carouselWanttoRead, setCarouselWanttoRead] = useState([{
+        image: 'https://www.freepnglogos.com/uploads/number-0-png/number-0-newest-submissions-puns-8.png',
+        title: 'Books Want to Read'
+}])
+    const [carouselRead, setCarouselRead] = useState([{
+        image: 'https://www.freepnglogos.com/uploads/number-0-png/number-0-newest-submissions-puns-8.png',
+        title: 'Books Read'
+}])
     const loggedIn = useSelector((state) => state.books.loggedIn)
     const bookMark = useSelector((state) => state.books.bookmark)
     const bookDetails = useSelector((state) => state.books.bookdetails)
 
     useEffect(async () => {
-        // try {
-        //     let filterSearchData = await fetch(`https://www.googleapis.com/books/v1/volumes?q=midlight+library :keyes&key=AIzaSyAajcnCCg4sfhvrnUV1RuQ-vmWBpejnqAs`)
-        //     let filterResponse = await filterSearchData.json()
-        //     // console.log('response: ', filterResponse.items)
-        //     // setAllBooks(filterResponse.items)
-        //     let carouselCards = []
-        //     filterResponse.items.forEach(element => {
-        //         carouselCards.push({
-        //             image: element.volumeInfo.imageLinks.smallThumbnail,
-        //             title: `${element.volumeInfo.title} by ${element.volumeInfo.authors}`
-        //         })
-        //         // allImages.push(element.volumeInfo.imageLinks.smallThumbnail)
-        //     });
-        //     // console.log('carouselCards: ', carouselCards)
-        //     setCarouselItems(carouselCards)
-        // }
-        // // filteredTitles.push('View All 10 Results')
-        // // setFilteredBooks(filteredTitles)
-        // // setBookImage(allImages)
-        // catch (error) {
-        //     console.log(error)
-        // }
-        console.log('show: ', bookDetails)
+        console.log('show: ', bookMark)
         switch (bookMark) {
             case 'Want to Read':
                 let carouselWantTo = []
@@ -88,9 +75,10 @@ export function MyBooks() {
 
 
     const _renderItem = ({ item, index }) => {
+        console.log('item: ', item)
         return (
             <View style={{
-                backgroundColor: 'floralwhite',
+                backgroundColor: 'teal',
                 borderRadius: 5,
                 height: 220,
                 width: 180,
@@ -105,7 +93,7 @@ export function MyBooks() {
                         uri: item.image,
                     }}
                 />
-                <Text style={{ fontSize: 15, paddingTop: 15 }}>{item.title}</Text>
+                <Text style={{ fontSize: 15, paddingTop: 15, color: 'white' }}>{item.title}</Text>
                 {/* <Text>{item.text}</Text> */}
             </View>
 
@@ -114,9 +102,9 @@ export function MyBooks() {
 
     return (
         <ScrollView>
-            {loggedIn && <View style={{ display: 'flex', flexDirection: 'column' }}>
+            {loggedIn && <View style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black' }}>
                 <View style={styles.carouselContainer}>
-                    <Text style={styles.read}>Currently Reading <Text>({carouselItems.length})</Text></Text>
+                    {bookDetails.current.length > 0 && <Text style={styles.read}>Currently Reading <Text>({carouselItems.length})</Text></Text>}
                     <Carousel
                         layout={"stack"}
                         layoutCardOffset={9}
@@ -131,7 +119,7 @@ export function MyBooks() {
                 </View>
 
                 <View style={styles.carouselContainer}>
-                    <Text style={styles.read}>Want to Read <Text>({carouselWanttoRead.length})</Text></Text>
+                    {bookDetails.wantTo.length > 0 && <Text style={styles.read}>Want to Read <Text>({carouselWanttoRead.length})</Text></Text>}
                     <Carousel
                         layout={"stack"}
                         layoutCardOffset={9}
@@ -146,7 +134,7 @@ export function MyBooks() {
                 </View>
 
                 <View style={styles.carouselContainer}>
-                    <Text style={styles.read}>Read <Text>({carouselRead.length})</Text></Text>
+                    {bookDetails.read.length > 0 && <Text style={styles.read}>Read <Text>({carouselRead.length})</Text></Text>}
                     <Carousel
                         layout={"stack"}
                         layoutCardOffset={9}
@@ -179,7 +167,8 @@ const styles = StyleSheet.create({
         padding: 20
     },
     read: {
-        padding: 10
+        padding: 10,
+        color: 'white'
     },
     login: {
         // display: 'flex',

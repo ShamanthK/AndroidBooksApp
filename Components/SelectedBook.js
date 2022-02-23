@@ -97,19 +97,19 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                     </View>
                     <View>
                         <Text style={styles.synopsis}>Synopsis</Text>
-                        {!showSynopsis && <Text>{book.item.volumeInfo.description.substr(0, 450)}...
+                        {!showSynopsis && <Text style={{ color: 'white' }}>{book.item.volumeInfo.description.substr(0, 450)}...
                             <TouchableOpacity onPress={() => showFullSynopsis()}>
                                 <Text style={styles.showMore}>Show more</Text>
                             </TouchableOpacity>
                         </Text>}
-                        {showSynopsis && <Text>{book.item.volumeInfo.description}
+                        {showSynopsis && <Text style={{ color: 'white' }}>{book.item.volumeInfo.description}
                             <TouchableOpacity onPress={() => showFullSynopsis()}>
                                 <Text style={styles.showMore}>Show less</Text>
                             </TouchableOpacity></Text>}
                     </View>
                     <View style={styles.bottomContent}>
-                        <Text><Text style={styles.bottom}>Published:</Text> {book.item.volumeInfo.publishedDate}</Text>
-                        <Text><Text style={styles.bottom}>Pages:</Text> {book.item.volumeInfo.pageCount}</Text>
+                        <Text style={{ color: 'white' }}><Text style={styles.bottom}>Published:</Text> {book.item.volumeInfo.publishedDate}</Text>
+                        <Text style={{ color: 'white' }}><Text style={styles.bottom}>Pages:</Text> {book.item.volumeInfo.pageCount}</Text>
                     </View>
                     <View style={styles.yourRating}>
                         {!loggedIn && <Text>Login to access additional features</Text>}
@@ -200,7 +200,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 20,
+        color: 'white'
     },
     author: {
         color: 'grey',
@@ -211,12 +212,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     ratingNumber: {
-        padding: 15
+        padding: 15,
+        color: 'white'
     },
     synopsis: {
         fontWeight: 'bold',
         fontSize: 18,
-        paddingBottom: 10
+        paddingBottom: 10,
+        color: 'white'
     },
     showMore: {
         textDecorationLine: 'underline',
@@ -227,10 +230,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         marginTop: 15,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     bottom: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: 'white'
     },
     yourRating: {
         alignItems: 'center',
@@ -240,6 +244,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: 400
+        width: 400,
     },
 })
