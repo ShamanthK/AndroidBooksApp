@@ -1,13 +1,30 @@
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Rating, Chip, Button } from 'react-native-elements';
+import { Rating, Chip, Button, Icon } from 'react-native-elements';
 import { SelectedBook } from './SelectedBook';
+import {
+    useFonts,
+    Oswald_200ExtraLight,
+    Oswald_300Light,
+    Oswald_400Regular,
+    Oswald_500Medium,
+    Oswald_600SemiBold,
+    Oswald_700Bold,
+} from '@expo-google-fonts/oswald';
 
 export function ViewAllBooks({ allBooks }) {
 
     const [listAll, setListAll] = useState([{}])
     const [selectedBook, setSelectedBook] = useState('')
     const [showSelected, setShowSelected] = useState(false)
+    let [fontsLoaded] = useFonts({
+        Oswald_200ExtraLight,
+        Oswald_300Light,
+        Oswald_400Regular,
+        Oswald_500Medium,
+        Oswald_600SemiBold,
+        Oswald_700Bold,
+    });
 
     useEffect(() => {
         let getAllData = []
@@ -18,7 +35,9 @@ export function ViewAllBooks({ allBooks }) {
                 title: element.volumeInfo.title,
                 author: element.volumeInfo.authors,
                 image: element.volumeInfo.imageLinks.smallThumbnail,
-                rating: element.volumeInfo.averageRating
+                rating: element.volumeInfo.averageRating,
+                pages: element.volumeInfo.pageCount,
+                genre: element.volumeInfo.categories[0]
             })
         })
         setListAll(getAllData)
@@ -30,9 +49,10 @@ export function ViewAllBooks({ allBooks }) {
     }
 
     const displayBooks = (books) => {
-        // console.log('books: ', books)
+        console.log('books: ', books)
         return (
             <View>
+                <TouchableOpacity onPress={() => displaySelectedBook(books.item.title)}>
                 <View style={styles.listContainer}>
                     <View>
                         <Image
@@ -45,37 +65,50 @@ export function ViewAllBooks({ allBooks }) {
                     <View style={styles.bookInfo}>
                         <Text style={styles.title}>{books.item.title}</Text>
                         <Text style={styles.author}>by {books.item.author}</Text>
-                        <Rating
+                        {/* <Rating
                             type="star"
                             startingValue={books.item.rating}
                             readonly
                             imageSize={25}
                             style={{ paddingVertical: 20, paddingRight: 30 }}
-                        />
-                        <Button
+                        /> */}
+                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingTop: 20 }}>
+                            <Text style={{ color: 'white', fontFamily: 'Oswald_500Medium' }}>Pages: {books.item.pages}</Text>
+                            <Text style={{ color: 'white', fontFamily: 'Oswald_500Medium' }}>Rating: {books.item.rating}</Text>
+                        </View>
+                        <Chip title={books.item.genre} containerStyle={{ marginTop: 40 }} type="outline" />
+                        {/* <Button
                             title={'View this Book'}
                             containerStyle={{
                                 width: 160,
-                                marginVertical: 20,
+                                marginVertical: 10,
                             }}
                             onPress={() => displaySelectedBook(books.item.title)}
-                        />
+                        /> */}
+                        {/* <View style={{ display: 'flex', flexDirection: 'row', marginTop: 15 }}>
+                            <TouchableOpacity                             onPress={() => displaySelectedBook(books.item.title)}
+>
+                            <Text style={{ color: 'white', paddingRight: 5 }}>View this book</Text>
+                            <Icon name='east' color="white" />
+                            </TouchableOpacity>
+                        </View> */}
                     </View>
                 </View>
+                </TouchableOpacity>
             </View>
         )
     }
 
     return (
         <View style={styles.container}>
-           {!showSelected && <><Text style={styles.top10}>Top 10 results</Text>
-            <View style={styles.resultsContainer}>
-                <FlatList
-                    data={listAll}
-                    renderItem={(books) => displayBooks(books)}
-                    keyExtractor={(books, index) => index.toString()}
-                ></FlatList>
-            </View></>}
+            {!showSelected && fontsLoaded && <><Text style={styles.top10}>Top 10 results</Text>
+                <View style={styles.resultsContainer}>
+                    <FlatList
+                        data={listAll}
+                        renderItem={(books) => displayBooks(books)}
+                        keyExtractor={(books, index) => index.toString()}
+                    ></FlatList>
+                </View></>}
             {showSelected && <SelectedBook selected={selectedBook} allBooks={allBooks} />}
         </View>
     )
@@ -86,14 +119,16 @@ const styles = StyleSheet.create({
         marginTop: 0
     },
     top10: {
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         fontSize: 20,
-        paddingBottom: 20
+        paddingBottom: 20,
+        fontFamily: 'Oswald_700Bold',
+        color: 'white'
     },
     listContainer: {
         display: 'flex',
         flexDirection: 'row',
-        paddingBottom: 10
+        paddingBottom: 30
     },
     bookLogo: {
         width: 120,
@@ -102,13 +137,15 @@ const styles = StyleSheet.create({
     bookInfo: {
         display: 'flex',
         flexDirection: 'column',
-        padding: 20
+        paddingLeft: 20
     },
     title: {
-        fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: 'Oswald_700Bold',
+        color: 'white'
     },
     author: {
-        color: 'grey'
+        color: 'grey',
+        fontFamily: 'Oswald_500Medium'
     }
 })

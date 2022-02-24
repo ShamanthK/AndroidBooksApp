@@ -1,8 +1,31 @@
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { Rating, Chip, Button, BottomSheet, ListItem, Icon } from 'react-native-elements';
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Rating, Chip, Button, BottomSheet, ListItem, Icon } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux'
 import { setBookmark, setBookDetails } from '../Redux/reduxSlice'
+import {
+    useFonts,
+    Roboto_100Thin,
+    Roboto_100Thin_Italic,
+    Roboto_300Light,
+    Roboto_300Light_Italic,
+    Roboto_400Regular,
+    Roboto_400Regular_Italic,
+    Roboto_500Medium,
+    Roboto_500Medium_Italic,
+    Roboto_700Bold,
+    Roboto_700Bold_Italic,
+    Roboto_900Black,
+    Roboto_900Black_Italic,
+} from '@expo-google-fonts/roboto';
+import {
+    Oswald_200ExtraLight,
+    Oswald_300Light,
+    Oswald_400Regular,
+    Oswald_500Medium,
+    Oswald_600SemiBold,
+    Oswald_700Bold,
+} from '@expo-google-fonts/oswald';
 
 export function SelectedBook({ selected, allBooks, goBack }) {
 
@@ -18,6 +41,27 @@ export function SelectedBook({ selected, allBooks, goBack }) {
     const dispatch = useDispatch()
 
     let bookOptions = ['Want to Read', 'Start Reading', 'Read', 'Cancel']
+
+    let [fontsLoaded] = useFonts({
+        Roboto_100Thin,
+        Roboto_100Thin_Italic,
+        Roboto_300Light,
+        Roboto_300Light_Italic,
+        Roboto_400Regular,
+        Roboto_400Regular_Italic,
+        Roboto_500Medium,
+        Roboto_500Medium_Italic,
+        // Roboto_700Bold,
+        Roboto_700Bold_Italic,
+        Roboto_900Black,
+        // Roboto_900Black_Italic,
+        Oswald_200ExtraLight,
+        Oswald_300Light,
+        Oswald_400Regular,
+        Oswald_500Medium,
+        Oswald_600SemiBold,
+        Oswald_700Bold,
+    });
 
     useEffect(() => {
         let titleIndex = selected.indexOf("by");
@@ -62,57 +106,61 @@ export function SelectedBook({ selected, allBooks, goBack }) {
             default:
                 break;
         }
-        // dispatch(setBookDetails([...bookDetails, showBookData[0]]))
-        // dispatch(setBookDetails({...bookDetails, current: showBookData[0]}))
     }
 
     const displayBookInfo = (book) => {
         // console.log(book.item.volumeInfo.description.length)
 
         return (
-            <View style={styles.flatList}>
-                <View style={styles.bookContainer}>
-                    <View style={styles.imageContainer}>
-                        <Image
-                            style={styles.tinyLogo}
-                            source={{
-                                uri: book.item.volumeInfo.imageLinks.smallThumbnail,
-                            }}
-                        />
-                    </View>
-                    <View style={styles.titleInfo}>
-                        <Text style={styles.title}>{book.item.volumeInfo.title}</Text>
-                        <Text style={styles.author}>by {book.item.volumeInfo.authors}</Text>
-                        <Chip title={book.item.volumeInfo.categories[0]} containerStyle={{ marginVertical: 10 }} />
-                        <View style={styles.rating}>
-                            <Rating
-                                type="star"
-                                startingValue={book.item.volumeInfo.averageRating}
-                                readonly
-                                imageSize={30}
-                                style={{ paddingVertical: 10 }}
-                            />
-                            <Text style={styles.ratingNumber}>{book.item.volumeInfo.averageRating} ({book.item.volumeInfo.ratingsCount} ratings)</Text>
+            <>
+                {fontsLoaded && <View style={styles.flatList}>
+                    <View style={styles.bookContainer}>
+
+
+                        <View style={{ borderColor: 'teal', borderWidth: 1, borderRadius: 10, padding: 20, width: 300 }}>
+                            <View style={styles.imageContainer}>
+                                <Image
+                                    style={styles.tinyLogo}
+                                    source={{
+                                        uri: book.item.volumeInfo.imageLinks.smallThumbnail,
+                                    }}
+                                />
+                            </View>
+                            <View style={styles.titleInfo}>
+                                <Text style={styles.title}>{book.item.volumeInfo.title}</Text>
+                                <Text style={styles.author}>by {book.item.volumeInfo.authors}</Text>
+                                <Chip title={book.item.volumeInfo.categories[0]} containerStyle={{ marginVertical: 10 }} />
+                                <View style={styles.rating}>
+                                    {/* <Rating
+                                    type="star"
+                                    startingValue={book.item.volumeInfo.averageRating}
+                                    readonly
+                                    imageSize={30}
+                                    style={{ paddingVertical: 10 }}
+                                /> */}
+                                    <Text style={styles.ratingNumber}>{book.item.volumeInfo.averageRating} ({book.item.volumeInfo.ratingsCount} ratings)</Text>
+                                </View>
+                            </View>
                         </View>
                     </View>
-                    <View>
+                    <View style={{ marginTop: 5 }}>
                         <Text style={styles.synopsis}>Synopsis</Text>
-                        {!showSynopsis && <Text style={{ color: 'white' }}>{book.item.volumeInfo.description.substr(0, 450)}...
+                        {!showSynopsis && <Text style={{ color: 'white', fontFamily: 'Roboto_400Regular_Italic' }}>{book.item.volumeInfo.description.substr(0, 450)}...
                             <TouchableOpacity onPress={() => showFullSynopsis()}>
                                 <Text style={styles.showMore}>Show more</Text>
                             </TouchableOpacity>
                         </Text>}
-                        {showSynopsis && <Text style={{ color: 'white' }}>{book.item.volumeInfo.description}
+                        {showSynopsis && <Text style={{ color: 'white', fontFamily: 'Roboto_400Regular_Italic' }}>{book.item.volumeInfo.description}
                             <TouchableOpacity onPress={() => showFullSynopsis()}>
                                 <Text style={styles.showMore}>Show less</Text>
                             </TouchableOpacity></Text>}
                     </View>
                     <View style={styles.bottomContent}>
-                        <Text style={{ color: 'white' }}><Text style={styles.bottom}>Published:</Text> {book.item.volumeInfo.publishedDate}</Text>
-                        <Text style={{ color: 'white' }}><Text style={styles.bottom}>Pages:</Text> {book.item.volumeInfo.pageCount}</Text>
+                        <Text style={{ color: 'white', fontFamily: 'Oswald_500Medium' }}><Text style={styles.bottom}>Published:</Text> {book.item.volumeInfo.publishedDate}</Text>
+                        <Text style={{ color: 'white', fontFamily: 'Oswald_500Medium' }}><Text style={styles.bottom}>Pages:</Text> {book.item.volumeInfo.pageCount}</Text>
                     </View>
                     <View style={styles.yourRating}>
-                        {!loggedIn && <Text>Login to access additional features</Text>}
+                        {!loggedIn && <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Login to access additional features</Text>}
                         {loggedIn && <><Text>Rate the book</Text>
                             <Rating
                                 type="star"
@@ -158,8 +206,8 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                             ))}
                         </BottomSheet>
                     </View>
-                </View>
-            </View>
+                </View>}
+            </>
         )
     }
 
@@ -176,18 +224,19 @@ export function SelectedBook({ selected, allBooks, goBack }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
+        // marginTop: 5,
         // padding: 20
     },
     tinyLogo: {
-        width: 190,
-        height: 270,
+        width: 130,
+        height: 200,
     },
     flatList: {
         paddingBottom: 60
     },
     bookContainer: {
-        // padding: 20,
+        padding: 10,
+        marginLeft: 25
     },
     imageContainer: {
         display: 'flex',
@@ -199,13 +248,15 @@ const styles = StyleSheet.create({
         padding: 5
     },
     title: {
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         fontSize: 20,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Oswald_700Bold'
     },
     author: {
         color: 'grey',
-        fontSize: 14
+        fontSize: 14,
+        fontFamily: 'Oswald_500Medium'
     },
     rating: {
         display: 'flex',
@@ -213,17 +264,19 @@ const styles = StyleSheet.create({
     },
     ratingNumber: {
         padding: 15,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Oswald_500Medium'
     },
     synopsis: {
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         fontSize: 18,
         paddingBottom: 10,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Oswald_700Bold'
     },
     showMore: {
         textDecorationLine: 'underline',
-        color: 'blue',
+        color: 'teal',
         fontSize: 14,
     },
     bottomContent: {

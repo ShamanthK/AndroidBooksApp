@@ -2,6 +2,15 @@ import { StyleSheet, Text, View, Button, Image, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
 import { useSelector, useDispatch } from 'react-redux'
+import {
+    useFonts,
+    Oswald_200ExtraLight,
+    Oswald_300Light,
+    Oswald_400Regular,
+    Oswald_500Medium,
+    Oswald_600SemiBold,
+    Oswald_700Bold,
+} from '@expo-google-fonts/oswald';
 
 export function MyBooks() {
 
@@ -21,6 +30,14 @@ export function MyBooks() {
     const loggedIn = useSelector((state) => state.books.loggedIn)
     const bookMark = useSelector((state) => state.books.bookmark)
     const bookDetails = useSelector((state) => state.books.bookdetails)
+    let [fontsLoaded] = useFonts({
+        Oswald_200ExtraLight,
+        Oswald_300Light,
+        Oswald_400Regular,
+        Oswald_500Medium,
+        Oswald_600SemiBold,
+        Oswald_700Bold,
+    });
 
     useEffect(async () => {
         console.log('show: ', bookMark)
@@ -85,7 +102,9 @@ export function MyBooks() {
                 padding: 20,
                 marginLeft: 55,
                 marginRight: 25,
-                alignItems: 'center'
+                alignItems: 'center', 
+                // borderColor: 'yellow',
+                // borderWidth: 2
             }}>
                 <Image
                     style={styles.bookLogo}
@@ -93,7 +112,7 @@ export function MyBooks() {
                         uri: item.image,
                     }}
                 />
-                <Text style={{ fontSize: 15, paddingTop: 15, color: 'white' }}>{item.title}</Text>
+                <Text style={{ fontSize: 14, paddingTop: 15, color: 'white', fontFamily: 'Oswald_500Medium' }}>{item.title}</Text>
                 {/* <Text>{item.text}</Text> */}
             </View>
 
@@ -102,7 +121,7 @@ export function MyBooks() {
 
     return (
         <ScrollView>
-            {loggedIn && <View style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black' }}>
+            {loggedIn && fontsLoaded && <View style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#121212' }}>
                 <View style={styles.carouselContainer}>
                     {bookDetails.current.length > 0 && <Text style={styles.read}>Currently Reading <Text>({carouselItems.length})</Text></Text>}
                     <Carousel
@@ -168,7 +187,8 @@ const styles = StyleSheet.create({
     },
     read: {
         padding: 10,
-        color: 'white'
+        color: 'white', 
+        fontFamily: 'Oswald_500Medium'
     },
     login: {
         // display: 'flex',

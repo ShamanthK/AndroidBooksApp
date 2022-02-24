@@ -6,6 +6,15 @@ import { ViewAllBooks } from './ViewAllBooks';
 import { Icon, Chip } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux'
 import { setBookmark, setBookDetails } from '../Redux/reduxSlice'
+import {
+    useFonts,
+    Oswald_200ExtraLight,
+    Oswald_300Light,
+    Oswald_400Regular,
+    Oswald_500Medium,
+    Oswald_600SemiBold,
+    Oswald_700Bold,
+} from '@expo-google-fonts/oswald';
 
 export function UserScreen() {
 
@@ -20,6 +29,14 @@ export function UserScreen() {
     const [selectedQuery, setSelectedQuery] = useState([])
     const [searched, setSearched] = useState(false)
     const dispatch = useDispatch()
+    let [fontsLoaded] = useFonts({
+        Oswald_200ExtraLight,
+        Oswald_300Light,
+        Oswald_400Regular,
+        Oswald_500Medium,
+        Oswald_600SemiBold,
+        Oswald_700Bold,
+    });
 
     const filterBooks = async (query) => {
         // console.log('query: ', query)
@@ -36,7 +53,7 @@ export function UserScreen() {
                     filteredTitles.push(`${element.volumeInfo.title} by ${element.volumeInfo.authors}`)
                     allImages.push(element.volumeInfo.imageLinks.smallThumbnail)
                 });
-                // console.log('filteredTitles: ', filteredTitles.splice(5, 5))
+                console.log('filteredTitles: ', filteredTitles.splice(5, 5))
                 filteredTitles.push('View All 10 Results')
                 setFilteredBooks(filteredTitles)
                 setBookImage(allImages)
@@ -75,30 +92,6 @@ export function UserScreen() {
         dispatch(setBookmark(''))
     }
 
-    // const displayBooks = (books) => {
-    //     console.log('books: ', books)
-    //     return (
-    //         <View style={styles.flatList}>
-    //             <View style={styles.bookContainer}>
-    //                 <View style={styles.imageContainer}>
-    //                     <Image
-    //                         style={styles.tinyLogo}
-    //                         source={{
-    //                             uri: books.item.volumeInfo.imageLinks.thumbnail,
-    //                         }}
-    //                     />
-    //                 </View>
-    //                 <Text>Title: {books.item.volumeInfo.title}</Text>
-    //                 <Text>Author: {books.item.volumeInfo.authors}</Text>
-    //                 <Text>Book Description: {books.item.volumeInfo.description}</Text>
-    //                 <Text>Published Date: {books.item.volumeInfo.publishedDate}</Text>
-    //                 <Text>Number of Pages: {books.item.volumeInfo.pageCount}</Text>
-    //                 <Text>Rating: {books.item.volumeInfo.averageRating}/5</Text>
-    //             </View>
-    //         </View>
-    //     )
-    // }
-
     const deleteChip = (i) => {
         // console.log(i)
         let deleteSelection = []
@@ -109,8 +102,8 @@ export function UserScreen() {
 
     return (
         <View style={styles.container}>
-            {!showBook && !showViewAll && <><View>
-                <Text style={{ color: 'white' }}>Enter book title or name of the author</Text>
+            {!showBook && !showViewAll && fontsLoaded && <><View>
+                <Text style={{ color: 'white', fontFamily: 'Oswald_500Medium', fontSize: 16 }}>Enter book title or name of the author</Text>
                 <View style={styles.autocompleteContainer}>
                     <Autocomplete
                         autoCapitalize="none"
@@ -180,7 +173,7 @@ const styles = StyleSheet.create({
         paddingTop: 70,
         paddingLeft: 30,
         paddingRight: 30,
-        backgroundColor: 'black',
+        backgroundColor: '#121212',
         height: 800
     },
     tinyLogo: {
@@ -204,7 +197,7 @@ const styles = StyleSheet.create({
         left: 0,
         position: 'absolute',
         right: 0,
-        top: 30,
+        top: 50,
         zIndex: 1
     },
     noRecentContainer: {
@@ -251,11 +244,13 @@ const styles = StyleSheet.create({
     noRecent: {
         fontSize: 20,
         padding: 10,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Oswald_500Medium'
     },
     recent: {
         fontSize: 16,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Oswald_500Medium'
         // fontWeight: 'bold'
     },
     chip: {
