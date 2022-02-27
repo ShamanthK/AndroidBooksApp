@@ -2,6 +2,10 @@ import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import React, { useState } from 'react';
 import { AccountScreen } from './AccountScreen';
+import {
+    useFonts,
+    Oswald_500Medium,
+} from '@expo-google-fonts/oswald';
 
 export function HomeScreen({ navigation }) {
 
@@ -10,10 +14,14 @@ export function HomeScreen({ navigation }) {
 
     const image = { uri: "https://wallpapercave.com/dwp2x/wp10055131.jpg" };
 
+    let [fontsLoaded] = useFonts({
+        Oswald_500Medium,
+    });
+
     return (
-        <View style={styles.container}>
+        <View style={{ backgroundColor: '#121212', height: 800 }}>
             {/* <ImageBackground source={image} style={styles.image}> */}
-                <View style={styles.textContainer}>
+            {fontsLoaded &&   <View style={styles.textContainer}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.login}>Login/Register to access app features</Text>
                     </View>
@@ -21,7 +29,7 @@ export function HomeScreen({ navigation }) {
                         <Button title="Login" onPress={() => setShowLogin(true)}></Button>
                         <Button title="Register as New User" onPress={() => setShowRegister(true)}></Button>
                     </View>
-                </View>
+                </View>}
             {/* </ImageBackground> */}
             <AccountScreen showLogin={showLogin} showRegister={showRegister} />
         </View>
@@ -30,12 +38,12 @@ export function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     textContainer: {
-        marginTop: 20,
+        marginTop: 50,
         padding: 20,
         display: 'flex',
         // height: 700,
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     titleContainer: {
         display: 'flex',
@@ -80,7 +88,9 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
     },
     login: {
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
         fontSize: 18,
+        color: 'white',
+        fontFamily: 'Oswald_500Medium'
     }
 })

@@ -195,9 +195,13 @@ const styles = StyleSheet.create({
         // flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 300,
+        // paddingTop: 300,
+        backgroundColor: '#121212',
+        height: 800,
     },
     logintext: {
-        fontSize: 18
+        fontSize: 18,
+        color: 'white',
+        fontFamily: 'Oswald_500Medium'
     }
 })

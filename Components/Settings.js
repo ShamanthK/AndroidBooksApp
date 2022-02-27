@@ -1,20 +1,47 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { useState } from 'react';
-import { Rating, Chip, Button, BottomSheet, ListItem, Icon, Avatar } from 'react-native-elements';
+import { Rating, Chip, Button, BottomSheet, ListItem, Icon, Avatar, Switch } from 'react-native-elements';
 import { HomeScreen } from './HomeScreen';
 import { useSelector, useDispatch } from 'react-redux'
 import { setLogin } from '../Redux/reduxSlice'
 
 export function Settings() {
 
-    let settings = ['Theme', 'Profile']
+    let settings = ['Theme', 'Profile', 'Liked Books']
 
     const isLogin = useSelector((state) => state.books.loggedIn)
     const dispatch = useDispatch()
 
+    const [showTheme, setShowTheme] = useState(false)
+    const [showProfile, setShowProfile] = useState(false)
+    const [showLiked, setShowLiked] = useState(false)
+
+    const openSettings = (l, i) => {
+        console.log(l, i)
+        switch (l) {
+            case 'Theme':
+                setShowTheme(true)
+                setShowProfile(false)
+                setShowLiked(false)
+                break;
+            case 'Theme':
+                setShowProfile(true)
+                setShowTheme(false)
+                setShowLiked(false)
+                break;
+            case 'Theme':
+                setShowLiked(true)
+                setShowTheme(false)
+                setShowProfile(false)
+                break;
+            default:
+                break;
+        }
+    }
+
     return (
         <View>
-            {isLogin && <View style={styles.container}>
+            {isLogin && (!showTheme && !showProfile && !showLiked) && <View style={styles.container}>
                 <View style={styles.avatar}>
                     <Avatar
                         size={64}
@@ -27,13 +54,18 @@ export function Settings() {
                 {settings.map((l, i) => (
                     <ListItem
                         key={i}
-                    // containerStyle={l.containerStyle}
+                        containerStyle={{
+                            backgroundColor: '#121212',
+                            borderBottomColor: 'grey', borderBottomWidth: 1,
+                            borderTopColor: 'grey', borderTopWidth: 1
+                        }}
+                        onPress={() => openSettings(l, i)}
                     // onPress={() => saveBookmark(i)}
                     >
                         <ListItem.Content>
                             <ListItem.Title>
                                 <View style={styles.settingsList}>
-                                    <Text>{l}</Text>
+                                    <Text style={{ color: 'white' }}>{l}</Text>
                                 </View>
                             </ListItem.Title>
                         </ListItem.Content>
@@ -59,12 +91,17 @@ export function Settings() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#121212',
+        height: 800
+    },
     avatar: {
         alignItems: 'center',
         padding: 15
     },
     settingsList: {
-        padding: 10
+        padding: 10,
+        color: 'white'
     },
     signout: {
         padding: 100,

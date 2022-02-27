@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Rating, Chip, Button, BottomSheet, ListItem, Icon } from 'react-native-elements'
+import { Rating, Chip, Button, BottomSheet, ListItem, Icon, Overlay } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux'
 import { setBookmark, setBookDetails } from '../Redux/reduxSlice'
 import {
@@ -33,6 +33,7 @@ export function SelectedBook({ selected, allBooks, goBack }) {
     const [showSynopsis, setShowSynopsis] = useState(false)
     const [openSheet, setOpenSheet] = useState(false)
     const [selectedOption, setSelectedOption] = useState(-1)
+    const [review, setReview] = useState(false)
 
     const loggedIn = useSelector((state) => state.books.loggedIn)
     // const bookMark = useSelector((state) => state.books.bookmark)
@@ -108,14 +109,21 @@ export function SelectedBook({ selected, allBooks, goBack }) {
         }
     }
 
+    const openReview = () => {
+        setReview(true)
+    }
+
     const displayBookInfo = (book) => {
         // console.log(book.item.volumeInfo.description.length)
 
         return (
             <>
                 {fontsLoaded && <View style={styles.flatList}>
-                    <View style={styles.bookContainer}>
+                    <TouchableOpacity onPress={goBack}>
+                        <Text style={styles.showMore}>Back</Text>
+                    </TouchableOpacity>
 
+                    <View style={styles.bookContainer}>
 
                         <View style={{ borderColor: 'teal', borderWidth: 1, borderRadius: 10, padding: 20, width: 300 }}>
                             <View style={styles.imageContainer}>
@@ -175,7 +183,7 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                                     marginHorizontal: 50,
                                     marginVertical: 10,
                                 }}
-                                onPress={goBack}
+                                onPress={() => openReview()}
                             />
                             <Button
                                 title={selectedOption === -1 ? 'Save to My Books' : bookOptions[selectedOption]}
@@ -206,7 +214,33 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                             ))}
                         </BottomSheet>
                     </View>
-                </View>}
+                    <Overlay isVisible={review}
+                        overlayStyle={{ backgroundColor: '#121212', borderColor: 'white', borderWidth: 1 }}
+                    >
+                        <View style={{
+                            height: 260,
+                            width: 300,
+                            padding: 10
+                        }}>
+                            <Text style={{ color: 'white', paddingBottom: 10 }}>Please provide your review below</Text>
+                            <TextInput
+                                multiline={true}
+                                numberOfLines={10}
+                                style={{ color: 'white', borderColor: 'white', borderWidth: 1 }}
+                            />
+                            <Button
+                                title={'Submit'}
+                                containerStyle={{
+                                    // width: 200,
+                                    marginHorizontal: 50,
+                                    marginVertical: 10,
+                                }}
+                                // onPress={() => openReview()}
+                            />
+                        </View>
+                    </Overlay>
+                </View>
+                }
             </>
         )
     }
