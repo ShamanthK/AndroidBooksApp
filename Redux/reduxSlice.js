@@ -10,7 +10,8 @@ const reduxSlice = createSlice({
         current: [],
         wantTo: [],
         read: []
-      }
+      },
+      likedBooks: []
     },
     reducers: {
       setLogin(state, action) {
@@ -21,9 +22,12 @@ const reduxSlice = createSlice({
       },
       setBookDetails(state, action) {
         state.bookdetails = action.payload
-      }
+      },
+      setLikedBooks(state, action) {
+        state.likedBooks = action.payload
+      },
     }
   })
   
-  export const { setLogin, setBookmark, setBookDetails } = reduxSlice.actions
+  export const { setLogin, setBookmark, setBookDetails, setLikedBooks } = reduxSlice.actions
   export default reduxSlice.reducer

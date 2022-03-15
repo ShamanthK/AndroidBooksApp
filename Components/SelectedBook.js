@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity, TextInput } 
 import React, { useEffect, useState } from 'react'
 import { Rating, Chip, Button, BottomSheet, ListItem, Icon, Overlay } from 'react-native-elements'
 import { useSelector, useDispatch } from 'react-redux'
-import { setBookmark, setBookDetails } from '../Redux/reduxSlice'
+import { setBookmark, setBookDetails, setLikedBooks } from '../Redux/reduxSlice'
 import {
     useFonts,
     Roboto_100Thin,
@@ -26,6 +26,7 @@ import {
     Oswald_600SemiBold,
     Oswald_700Bold,
 } from '@expo-google-fonts/oswald';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export function SelectedBook({ selected, allBooks, goBack }) {
 
@@ -34,10 +35,13 @@ export function SelectedBook({ selected, allBooks, goBack }) {
     const [openSheet, setOpenSheet] = useState(false)
     const [selectedOption, setSelectedOption] = useState(-1)
     const [review, setReview] = useState(false)
+    const [userReview, setUserReview] = useState('')
+    const [liked, setLiked] = useState(false)
 
     const loggedIn = useSelector((state) => state.books.loggedIn)
     // const bookMark = useSelector((state) => state.books.bookmark)
     const bookDetails = useSelector((state) => state.books.bookdetails)
+    const likedBooks = useSelector((state) => state.books.likedBooks)
 
     const dispatch = useDispatch()
 
@@ -83,12 +87,39 @@ export function SelectedBook({ selected, allBooks, goBack }) {
         setShowBookData(selectedBookData)
     }, [])
 
+    useEffect(() => {
+        let isRead = false
+        let isCurrent = false
+        let isWantTo = false
+        if (showBookData.length > 0) {
+            if(bookDetails.read.length > 0) {
+                isRead = (bookDetails.read[0].volumeInfo.title === showBookData[0].volumeInfo.title)
+                if (isRead) {
+                    setSelectedOption(2)
+                }
+            }
+            if(bookDetails.current.length > 0) {
+                isCurrent = (bookDetails.current[0].volumeInfo.title === showBookData[0].volumeInfo.title)
+                if (isCurrent) {
+                    setSelectedOption(1)
+                }
+            }
+            if(bookDetails.wantTo.length > 0) {
+                isWantTo = (bookDetails.wantTo[0].volumeInfo.title === showBookData[0].volumeInfo.title)
+                if (isWantTo) {
+                    setSelectedOption(0)
+                }
+            }
+        }
+    }, [showBookData])
+
     const showFullSynopsis = () => {
         setShowSynopsis(!showSynopsis)
         // console.log('message: ', bookMark)
     }
 
     const saveBookmark = (i) => {
+        console.log(i)
         setOpenSheet(false)
         if (i !== 3) {
             setSelectedOption(i)
@@ -111,6 +142,15 @@ export function SelectedBook({ selected, allBooks, goBack }) {
 
     const openReview = () => {
         setReview(true)
+    }
+
+    const addLikedBooks = () => {
+        setLiked(!liked)
+        // if(liked) {
+        let newlyLiked = likedBooks
+        newlyLiked.push(showBookData)
+        setLikedBooks(likedBooks)
+        // }
     }
 
     const displayBookInfo = (book) => {
@@ -148,6 +188,13 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                                 /> */}
                                     <Text style={styles.ratingNumber}>{book.item.volumeInfo.averageRating} ({book.item.volumeInfo.ratingsCount} ratings)</Text>
                                 </View>
+                                <TouchableOpacity onPress={() => addLikedBooks()}>
+                                    <MaterialCommunityIcons
+                                        name={liked ? "heart" : "heart-outline"}
+                                        size={32}
+                                        color={liked ? "red" : "white"}
+                                    />
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -177,7 +224,7 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                                 style={{ paddingVertical: 10 }}
                             />
                             <Button
-                                title={'Write a Review'}
+                                title={userReview === '' ? 'Write a Review' : 'Edit Review'}
                                 containerStyle={{
                                     width: 200,
                                     marginHorizontal: 50,
@@ -214,6 +261,13 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                             ))}
                         </BottomSheet>
                     </View>
+                    {userReview !== '' && <View>
+                        <Text style={{ color: 'white', fontFamily: 'Oswald_700Bold', paddingBottom: 10 }}>My Review: </Text>
+                        <Text style={{
+                            color: 'white', fontFamily: 'Oswald_500Medium', height: 175,
+                            width: 350, borderColor: 'teal', borderWidth: 1, padding: 10
+                        }}>{userReview}</Text>
+                    </View>}
                     <Overlay isVisible={review}
                         overlayStyle={{ backgroundColor: '#121212', borderColor: 'white', borderWidth: 1 }}
                     >
@@ -227,6 +281,7 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                                 multiline={true}
                                 numberOfLines={10}
                                 style={{ color: 'white', borderColor: 'white', borderWidth: 1 }}
+                                onChangeText={(value) => setUserReview(value)}
                             />
                             <Button
                                 title={'Submit'}
@@ -235,7 +290,7 @@ export function SelectedBook({ selected, allBooks, goBack }) {
                                     marginHorizontal: 50,
                                     marginVertical: 10,
                                 }}
-                                // onPress={() => openReview()}
+                                onPress={() => setReview(false)}
                             />
                         </View>
                     </Overlay>

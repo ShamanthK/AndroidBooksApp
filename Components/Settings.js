@@ -4,6 +4,7 @@ import { Rating, Chip, Button, BottomSheet, ListItem, Icon, Avatar, Switch } fro
 import { HomeScreen } from './HomeScreen';
 import { useSelector, useDispatch } from 'react-redux'
 import { setLogin } from '../Redux/reduxSlice'
+import { LikedBooks } from './LikedBooks';
 
 export function Settings() {
 
@@ -24,12 +25,12 @@ export function Settings() {
                 setShowProfile(false)
                 setShowLiked(false)
                 break;
-            case 'Theme':
+            case 'Profile':
                 setShowProfile(true)
                 setShowTheme(false)
                 setShowLiked(false)
                 break;
-            case 'Theme':
+            case 'Liked Books':
                 setShowLiked(true)
                 setShowTheme(false)
                 setShowProfile(false)
@@ -86,6 +87,7 @@ export function Settings() {
 
             </View>}
             {!isLogin && <HomeScreen />}
+            {showLiked && <LikedBooks />}
         </View>
     )
 }
